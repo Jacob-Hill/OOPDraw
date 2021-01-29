@@ -35,6 +35,8 @@
             this.Colour = new System.Windows.Forms.ComboBox();
             this.ShapeLabel = new System.Windows.Forms.Label();
             this.Shape = new System.Windows.Forms.ComboBox();
+            this.Action = new System.Windows.Forms.ComboBox();
+            this.ActionLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -103,7 +105,7 @@
             // 
             this.ShapeLabel.AutoSize = true;
             this.ShapeLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ShapeLabel.Location = new System.Drawing.Point(13, 129);
+            this.ShapeLabel.Location = new System.Drawing.Point(13, 125);
             this.ShapeLabel.Name = "ShapeLabel";
             this.ShapeLabel.Size = new System.Drawing.Size(38, 13);
             this.ShapeLabel.TabIndex = 6;
@@ -117,10 +119,32 @@
             "Rectangle",
             "Ellipse",
             "Circle"});
-            this.Shape.Location = new System.Drawing.Point(12, 146);
+            this.Shape.Location = new System.Drawing.Point(12, 142);
             this.Shape.Name = "Shape";
             this.Shape.Size = new System.Drawing.Size(121, 21);
             this.Shape.TabIndex = 7;
+            // 
+            // Action
+            // 
+            this.Action.FormattingEnabled = true;
+            this.Action.Items.AddRange(new object[] {
+            "Draw",
+            "Move",
+            "Select"});
+            this.Action.Location = new System.Drawing.Point(12, 198);
+            this.Action.Name = "Action";
+            this.Action.Size = new System.Drawing.Size(121, 21);
+            this.Action.TabIndex = 8;
+            // 
+            // ActionLabel
+            // 
+            this.ActionLabel.AutoSize = true;
+            this.ActionLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ActionLabel.Location = new System.Drawing.Point(12, 182);
+            this.ActionLabel.Name = "ActionLabel";
+            this.ActionLabel.Size = new System.Drawing.Size(37, 13);
+            this.ActionLabel.TabIndex = 9;
+            this.ActionLabel.Text = "Action";
             // 
             // OOPDraw
             // 
@@ -128,6 +152,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.ClientSize = new System.Drawing.Size(2105, 996);
+            this.Controls.Add(this.ActionLabel);
+            this.Controls.Add(this.Action);
             this.Controls.Add(this.Shape);
             this.Controls.Add(this.ShapeLabel);
             this.Controls.Add(this.Colour);
@@ -152,6 +178,8 @@
         private System.Windows.Forms.ComboBox Colour;
         private System.Windows.Forms.Label ShapeLabel;
         private System.Windows.Forms.ComboBox Shape;
+        private System.Windows.Forms.ComboBox Action;
+        private System.Windows.Forms.Label ActionLabel;
     }
 }
 

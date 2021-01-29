@@ -14,12 +14,16 @@ namespace OOPDraw
             LineWidth.SelectedItem = "Medium";
             Colour.SelectedItem = "Green";
             Shape.SelectedItem = "Line";
+            Action.SelectedItem = "Draw";
         }
+
         Pen currentPen = new Pen(Color.Black);
         bool dragging = false;
         Point startOfDrag = Point.Empty;
         Point lastMousePosition = Point.Empty;
+        Rectangle selectionBox;
         private List<Shape> shapes = new List<Shape>();
+
         private void Canvas_Paint(object sender, PaintEventArgs e)
         {
             Graphics gr = e.Graphics;
@@ -27,11 +31,30 @@ namespace OOPDraw
             {
                 shape.Draw(gr);
             }
+            if (selectionBox != null)
+            {
+                selectionBox.Draw(gr);
+            }
         }
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             dragging = true;
             startOfDrag = lastMousePosition = e.Location;
+            switch (Action.Text)
+            {
+                case "Draw":
+                    AddShape(e);
+                    break;
+                case "Select":
+                    Pen p = new Pen(Color.Black, 1.0F);
+                    selectionBox = new Rectangle(p, startOfDrag.X, startOfDrag.Y);
+                    break;
+            }
+
+        }
+
+        private void AddShape(MouseEventArgs e)
+        {
             switch (Shape.Text)
             {
                 case "Line":
@@ -48,12 +71,28 @@ namespace OOPDraw
                     break;
             }
         }
+
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (dragging)
             {
                 Shape shape = shapes.Last();
-                shape.GrowTo(e.X, e.Y);
+                switch (Action.Text)
+                {
+                    case "Move":
+                        if (lastMousePosition == Point.Empty) lastMousePosition =
+                        e.Location;
+                        shape.MoveBy(e.X - lastMousePosition.X, e.Y -
+                        lastMousePosition.Y);
+                        break;
+                    case "Draw":
+                        shape.GrowTo(e.X, e.Y);
+                        break;
+                    case "Select":
+                        selectionBox.GrowTo(e.X, e.Y);
+                        SelectShapes();
+                        break;
+                }
                 lastMousePosition = e.Location;
                 Refresh();
             }
@@ -61,6 +100,9 @@ namespace OOPDraw
         private void Canvas_MouseUp(object sender, MouseEventArgs e)
         {
             dragging = false;
+            lastMousePosition = Point.Empty;
+            selectionBox = null;
+            Refresh();
         }
 
         private void LineWidth_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -96,6 +138,26 @@ namespace OOPDraw
                     break;
             }
             currentPen = new Pen(color, currentPen.Width);
+        }
+
+        private void DeselectAll()
+        {
+            foreach(Shape s in shapes)
+            {
+                s.Deselect();
+            }
+        }
+
+        private void SelectShapes()
+        {
+            DeselectAll();
+            foreach(Shape s in shapes)
+            {
+                if (selectionBox.FullySurrounds(s))
+                {
+                    s.Select();
+                }
+            }
         }
     }
 }
